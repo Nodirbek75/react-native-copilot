@@ -1,10 +1,15 @@
 // @flow
 import React, { Component } from 'react';
-
-import { View, Animated } from 'react-native';
+import PropTypes from 'prop-types';
+import { View, Animated, I18nManager, TouchableOpacity } from 'react-native';
 import styles from './style';
+import GestureRecognizer from 'react-native-swipe-gestures';
 
 import type { valueXY } from '../types';
+
+const rtl = I18nManager.isRTL;
+const start = rtl ? 'right' : 'left';
+const end = rtl ? 'left' : 'right';
 
 type Props = {
   size: valueXY,
@@ -28,6 +33,9 @@ type State = {
 };
 
 class ViewMask extends Component<Props, State> {
+  static contextTypes = {
+    _copilot: PropTypes.object,
+  }
   state = {
     size: new Animated.ValueXY({ x: 0, y: 0 }),
     position: new Animated.ValueXY({ x: 0, y: 0 }),
@@ -77,46 +85,65 @@ class ViewMask extends Component<Props, State> {
     );
 
     return (
-      <View style={this.props.style} onStartShouldSetResponder={this.props.onClick}>
-        <Animated.View
-          style={[
-            styles.overlayRectangle,
-            {
-              right: leftOverlayRight,
-              backgroundColor: this.props.backdropColor,
-            }]}
-        />
-        <Animated.View
-          style={[
-            styles.overlayRectangle,
-            {
-              left: rightOverlayLeft,
-              backgroundColor: this.props.backdropColor,
-            }]}
-        />
-        <Animated.View
-          style={[
-            styles.overlayRectangle,
-            {
-              top: bottomOverlayTopBoundary,
-              left: verticalOverlayLeftBoundary,
-              right: verticalOverlayRightBoundary,
-              backgroundColor: this.props.backdropColor,
-            },
-          ]}
-        />
-        <Animated.View
-          style={[
-            styles.overlayRectangle,
-            {
-              bottom: topOverlayBottomBoundary,
-              left: verticalOverlayLeftBoundary,
-              right: verticalOverlayRightBoundary,
-              backgroundColor: this.props.backdropColor,
-            },
-          ]}
-        />
-      </View>
+      <GestureRecognizer
+        onSwipeLeft={this.context._copilot.getCurrentStep().target.props.children.props.diraction == "left" && this.context._copilot.getCurrentStep().target.props.children.props.onSwipe || null}
+        onSwipeRight={this.context._copilot.getCurrentStep().target.props.children.props.diraction == "right" && this.context._copilot.getCurrentStep().target.props.children.props.onSwipe || null}
+        onSwipeUp={this.context._copilot.getCurrentStep().target.props.children.props.diraction == "up" && this.context._copilot.getCurrentStep().target.props.children.props.onSwipe || null}
+        onSwipeDown={this.context._copilot.getCurrentStep().target.props.children.props.diraction == "down" && this.context._copilot.getCurrentStep().target.props.children.props.onSwipe || null}
+        style={this.props.style}
+      >
+        <View style={this.props.style} onStartShouldSetResponder={this.props.onClick}>
+          <Animated.View
+            style={[
+              styles.overlayRectangle,
+              {
+                right: leftOverlayRight,
+                backgroundColor: this.props.backdropColor,
+              }]}
+          />
+          <Animated.View
+            style={[
+              styles.overlayRectangle,
+              {
+                left: rightOverlayLeft,
+                backgroundColor: this.props.backdropColor,
+              }]}
+          />
+          <Animated.View
+            style={[
+              styles.overlayRectangle,
+              {
+                top: bottomOverlayTopBoundary,
+                left: verticalOverlayLeftBoundary,
+                right: verticalOverlayRightBoundary,
+                backgroundColor: this.props.backdropColor,
+              },
+            ]}
+          />
+          <Animated.View
+            style={[
+              styles.overlayRectangle,
+              {
+                bottom: topOverlayBottomBoundary,
+                left: verticalOverlayLeftBoundary,
+                right: verticalOverlayRightBoundary,
+                backgroundColor: this.props.backdropColor,
+              },
+            ]}
+          />
+          <TouchableOpacity
+            style={{
+              backgroundColor: 'transparent',
+              [start]: this.props.position.x,
+              [end]: (this.props.layout.width - (this.props.size.x + this.props.position.x)),
+              top: this.props.position.y,
+              width: this.props.size.x,
+              height: this.props.size.y,
+            }}
+            onPress={this.context._copilot.getCurrentStep().target.props.children.props.onPress || null}
+          />
+        </View>
+      </GestureRecognizer>
     );
   }
 }

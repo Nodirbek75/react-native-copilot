@@ -44,6 +44,11 @@ const copilot = ({
   verticalOffset = 0,
   wrapperStyle,
   arrowColor,
+  introComponent,
+  img,
+  diraction,
+  onSwipe,
+  onPress
 } = {}) =>
   (WrappedComponent) => {
     class Copilot extends Component<any, State> {
@@ -221,6 +226,11 @@ const copilot = ({
               stopOnOutsideClick={stopOnOutsideClick}
               arrowColor={arrowColor}
               ref={(modal) => { this.modal = modal; }}
+              introComponent={introComponent}
+              img={img}
+              diraction={diraction}
+              onSwipe={onSwipe}
+              onPress={onPress}
             />
           </View>
         );
