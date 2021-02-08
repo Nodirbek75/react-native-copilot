@@ -19,22 +19,25 @@ export default StyleSheet.create({
   },
   arrow: {
     position: 'absolute',
+    marginRight: 10,
     borderColor: 'transparent',
     borderWidth: ARROW_SIZE,
   },
   tooltip: {
     position: 'absolute',
-    paddingTop: 15,
+    paddingTop: 10,
+    paddingBottom: 10,
     paddingHorizontal: 15,
-    backgroundColor: '#fff',
-    borderRadius: 3,
+    backgroundColor: 'rgba(79,193,255,0.9)',
+    borderRadius: 50,
     overflow: 'hidden',
   },
   tooltipText: {
-
+    color: "#fff"
   },
   tooltipContainer: {
     flex: 1,
+    fontSize: 14,
   },
   stepNumberContainer: {
     position: 'absolute',

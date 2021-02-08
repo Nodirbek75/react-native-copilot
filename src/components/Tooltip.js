@@ -31,8 +31,8 @@ const Tooltip = ({
     <View style={styles.tooltipContainer}>
       <Text testID="stepDescription" style={styles.tooltipText}>{currentStep.text}</Text>
     </View>
-    <View style={[styles.bottomBar]}>
-      {
+    {/* <View style={[styles.bottomBar]}> */}
+      {/* {
         !isLastStep ?
           <TouchableOpacity onPress={handleStop}>
             <Button>{labels.skip || 'Skip'}</Button>
@@ -54,8 +54,8 @@ const Tooltip = ({
           <TouchableOpacity onPress={handleStop}>
             <Button>{labels.finish || 'Finish'}</Button>
           </TouchableOpacity>
-      }
-    </View>
+      } */}
+    {/* </View> */}
   </View>
 );
 

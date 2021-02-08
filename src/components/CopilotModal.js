@@ -1,11 +1,14 @@
 // @flow
 import React, { Component } from 'react';
-import { Animated, Easing, View, NativeModules, Modal, StatusBar, Platform, TouchableWithoutFeedback, Text, Image } from 'react-native';
+import { Animated, Easing, View, NativeModules, Modal, StatusBar, Platform, TouchableWithoutFeedback, Text, Image, Dimensions } from 'react-native';
 import Tooltip from './Tooltip';
 import StepNumber from './StepNumber';
 import styles, { MARGIN, ARROW_SIZE, STEP_NUMBER_DIAMETER, STEP_NUMBER_RADIUS } from './style';
 import type { SvgMaskPathFn } from '../types';
 import GestureRecognizer from 'react-native-swipe-gestures';
+
+const deviceWidth = Dimensions.get('window').width;
+const deviceHeight = Dimensions.get('window').height;
 
 type Props = {
   stop: () => void,
@@ -59,7 +62,7 @@ class CopilotModal extends Component<Props, State> {
     backdropColor: 'rgba(0, 0, 0, 0.4)',
     labels: {},
     stopOnOutsideClick: false,
-    arrowColor: '#fff',
+    arrowColor: 'rgba(79,193,255,0.9)',
   };
 
   state = {
@@ -302,25 +305,23 @@ class CopilotModal extends Component<Props, State> {
   renderIntro() {
     const { introComponent, img, onPress, onSwipe, diraction } = this.props;
     return (
-      <>
-        <View style={{ position: "absolute", top: "50%" }}>
-          <GestureRecognizer
-            onSwipeLeft={diraction == "left" && onSwipe}
-            onSwipeRight={diraction == "right" && onSwipe}
-            onSwipeUp={diraction == "up" && onSwipe}
-            onSwipeDown={diraction == "down" && onSwipe}
-          >
-            <TouchableWithoutFeedback onPress={onPress} >
-              {introComponent ?
-                <View style={{ position: "absolute", top: "50%", left: 0 }}>
-                  {img && <Image source={img} />}
-                  <Text style={{ fontSize: 40, color: "#fff" }}>{introComponent}</Text>
-                </View> : null
-              }
-            </TouchableWithoutFeedback>
-          </GestureRecognizer>
-        </View>
-      </>
+      <View style={{ position: 'absolute', top: "50%", left: "50%", transform: [{ translateX: Platform.OS == "ios" ? "-50%" : -50 }, { translateY: Platform.OS == "ios" ? "-50%" : -50 }] }}>
+        <GestureRecognizer
+          onSwipeLeft={diraction == "left" && onSwipe}
+          onSwipeRight={diraction == "right" && onSwipe}
+          onSwipeUp={diraction == "up" && onSwipe}
+          onSwipeDown={diraction == "down" && onSwipe}
+        >
+          <TouchableWithoutFeedback onPress={onPress} >
+            {introComponent ?
+              <View style={{ justifyContent: "center", alignItems: 'center' }}>
+                {img && <Image source={img} />}
+                <Text style={{ fontSize: 17, color: "#fff" }}>{introComponent}</Text>
+              </View> : null
+            }
+          </TouchableWithoutFeedback>
+        </GestureRecognizer>
+      </View>
     )
   }
 
